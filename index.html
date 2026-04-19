@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="BoardJS — Timeline-based animation library for presentations, stories and interactive ads.">
+  <title>BoardJS — Interactive Presentation Library</title>
+  <link rel="stylesheet" href="files/styles.css">
+</head>
+<body>
+  <div id="app">
+
+    <header id="site-header">
+      <div class="site-logo">
+        <img src="files/logo.png" alt="BoardJS" onerror="this.style.display='none'">
+        BoardJS
+      </div>
+      <nav class="header-links" aria-label="Site navigation">
+        <a href="documentation.htm">Docs</a>
+        <a href="https://github.com" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </header>
+
+    <main>
+      <div class="board-layout">
+
+        <section class="bjs-stage-wrap" aria-label="Presentation stage">
+          <div id="TheShow" role="region" aria-live="polite"></div>
+        </section>
+
+        <aside id="sidebar" aria-label="Examples">
+          <div class="sidebar-title">Examples</div>
+          <div id="IndexItems" role="list">
+            <div class="Item Selected" role="listitem" tabindex="0" data-example="ExHome">
+              <span>Home</span><span>by Firas</span>
+            </div>
+            <div class="Item" role="listitem" tabindex="0" data-example="ExBubbles">
+              <span>Bubbles</span><span>by Firas Moussa</span>
+            </div>
+            <div class="Item" role="listitem" tabindex="0" data-example="ExCredits">
+              <span>Credits</span><span>by Firas</span>
+            </div>
+            <div class="Item" role="listitem" tabindex="0" data-example="ExHover">
+              <span>Hover function</span><span>by Firas</span>
+            </div>
+            <div class="Item" role="listitem" tabindex="0" data-example="ExGallery">
+              <span>Simple photo gallery</span><span>by Firas</span>
+            </div>
+            <div class="Item" role="listitem" tabindex="0" data-example="ExWheel">
+              <span>Wheel</span><span>by Firas</span>
+            </div>
+            <div class="Item" role="listitem" tabindex="0" data-example="ExEasing">
+              <span>Easing</span><span>by Firas</span>
+            </div>
+            <div class="Item" role="listitem" tabindex="0" data-example="ExDialog">
+              <span>Dialog</span><span>by Firas</span>
+            </div>
+          </div>
+        </aside>
+
+      </div>
+    </main>
+
+    <footer id="site-footer">
+      &copy; 2010&ndash;2026 Firas Moussa &mdash; BoardJS v2.0
+    </footer>
+
+  </div>
+
+  <script src="files/board.js"></script>
+  <script src="files/soundmanager2.js"></script>
+  <script src="files/main.js"></script>
+</body>
+</html>

@@ -1,486 +1,604 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-<title>Porizm</title>
-<link href="files/styles.css" rel="stylesheet"/>
-<script type="text/javascript" src="files/board.js"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BoardJS — Documentation</title>
+  <link rel="stylesheet" href="files/styles.css">
+  <style>
+    /* ── Doc-specific styles ──────────────────────────────────── */
+    .doc-wrap {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 10px 60px;
+    }
+
+    .doc-section {
+      margin-bottom: 48px;
+    }
+
+    .doc-section h2 {
+      font-size: 28px;
+      color: var(--accent-light);
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 8px;
+      margin-bottom: 20px;
+      letter-spacing: .5px;
+    }
+
+    .doc-section p,
+    .doc-section li {
+      font-size: 16px;
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    .doc-section ul {
+      list-style: disc;
+      padding-left: 24px;
+      margin-top: 8px;
+    }
+
+    .doc-section li + li { margin-top: 4px; }
+
+    /* Method entries */
+    .method {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 18px 22px;
+      margin-bottom: 16px;
+    }
+
+    .method-name {
+      font-size: 20px;
+      font-weight: bold;
+      color: var(--accent-light);
+      margin-bottom: 8px;
+    }
+
+    .method-desc {
+      font-size: 15px;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+      line-height: 1.6;
+    }
+
+    /* Code blocks */
+    pre, code {
+      font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+      font-size: 14px;
+    }
+
+    pre {
+      background: var(--surface-2);
+      border: 1px solid var(--surface-3);
+      border-radius: var(--radius-sm);
+      padding: 14px 18px;
+      overflow-x: auto;
+      margin: 10px 0;
+      line-height: 1.6;
+    }
+
+    code {
+      background: var(--surface-2);
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: #d4a0a0;
+    }
+
+    pre code {
+      background: none;
+      padding: 0;
+      color: #e0e0e0;
+    }
+
+    .kw  { color: #569cd6; }   /* keyword */
+    .fn  { color: #dcdcaa; }   /* function */
+    .str { color: #ce9178; }   /* string */
+    .num { color: #b5cea8; }   /* number */
+    .cm  { color: #6a9955; }   /* comment */
+    .key { color: #9cdcfe; }   /* object key */
+
+    /* Params table */
+    .params {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    .params th {
+      text-align: left;
+      padding: 6px 10px;
+      background: var(--surface-2);
+      color: var(--text-muted);
+      font-weight: normal;
+      border-bottom: 1px solid var(--surface-3);
+    }
+
+    .params td {
+      padding: 7px 10px;
+      border-bottom: 1px solid rgba(255,255,255,.05);
+      vertical-align: top;
+    }
+
+    .params td:first-child { color: #9cdcfe; white-space: nowrap; }
+    .params td:last-child  { color: var(--text-muted); }
+
+    .badge {
+      display: inline-block;
+      font-size: 11px;
+      padding: 1px 6px;
+      border-radius: 3px;
+      background: var(--surface-3);
+      color: var(--text-muted);
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+
+    .badge.opt { background: #2a3a2a; color: #7fb87f; }
+
+    /* Constants table */
+    .const-table { border-collapse: collapse; font-size: 14px; }
+    .const-table td { padding: 5px 16px 5px 0; vertical-align: top; }
+    .const-table td:first-child { color: #9cdcfe; white-space: nowrap; }
+    .const-table td:last-child  { color: var(--text-muted); }
+
+    /* Note callout */
+    .note {
+      background: rgba(192,80,77,.12);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      padding: 10px 16px;
+      margin: 12px 0;
+      font-size: 14px;
+      color: var(--text);
+    }
+  </style>
 </head>
 <body>
-	<div id="Everything" style="overflow:visible">
-	
-		
-		<div id="TheDocumentation" class="ABox">
-			<div class="Title">Documentation</div>
-			<div class="DocContent">
-				<div style="color:rgb(129, 35, 33);font-size:30px;font-weight:bold">Overview</div>
-				BoardJS is a JavaScript library that simplifies the way of making interactive presentations, stories and ads.
-				<br/>
-				The library works by writing commands such as adding texts, images, moving objects and showing tooltips, and once the .go() function is called, commands will be executed one by one.
-				The list of commands will be interpreted in the library as a timeline.
-				<br/><br/>
-				The benefits and features of the library are:
-				<ul class="DocSubText">
-				<li>1.	Optimized and fast</li>
-				<li>2.	Cross browser and platform</li>
-				<li>3.	Changes the presentation without refreshing the page</li>
-				<li>4.	Applies commands to more than one object at a time</li>
-				<li>5.	Easy to update presentations</li>
-				<li>6.	Uses only HTML, JavaScript and CSS</li>
-				</ul>
-				Take a look at the examples.<br/>
-				If you get familiar with commands,
-				any presentation should take about 30 minutes to finish the code.<br/>
-				What will take your  time is thinking about the presentation and preparing its content.
-			
-				<br/><br/>
-				<div style="color:rgb(129, 35, 33);font-size:30px;font-weight:bold">License</div>
-				Licensed under the MIT license.
-				<br/>
-				<a style="color:#02a" target="_blank" href="http://board.porizm.com/MIT.txt">http://board.porizm.com/MIT.txt</a>
-			
-				<br/><br/>
-				<div style="color:rgb(129, 35, 33);font-size:30px;font-weight:bold">Preparation</div>
-				Preparing the library is quite simple, creating a new instance by only one line of code with one parameter, like this:
-				<br/>
-				<div class="Code">
-				<span style='color:#800000; font-weight:bold; '>var</span> myObject <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> BoardJS<span style='color:#808030; '>(</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>ContainerDiv</span><span style='color:#800000; '>"</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
-				</div>
-				<br/>
-				ContainerDiv is the id of the handle div (the container which will handle the objects)
-				<br/>
-				Now you can start writing commands.<br/>
-				Note: you can clean the board by using myObject.reset(), so you don't have to prepare the board again.
-				<br/><br/>
-				
-				<div style="color:rgb(129, 35, 33);font-size:30px;font-weight:bold">Using Commands</div>
-				<div>
-				After you prepare the board, you can write your commands then execute them, like this:<br/>
-				<div class="Code">
-				<span style='color:#800000; font-weight:bold; '>var</span> myObject <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> BoardJS<span style='color:#808030; '>(</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>ContainerDiv</span><span style='color:#800000; '>"</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span><br/>
-				myObject<span style='color:#808030; '>.</span>background<span style='color:#808030; '>(</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>rgb(78,122,219)</span><span style='color:#800000; '>"</span><span style='color:#808030; '>,</span> <span style='color:#008c00; '>500</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span><br/>
-				myObject<span style='color:#808030; '>.</span>addText<span style='color:#808030; '>(</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>Hello World</span><span style='color:#800000; '>"</span><span style='color:#808030; '>,</span> <span style='color:#008c00; '>0</span><span style='color:#808030; '>,</span> <span style='color:#008c00; '>50</span><span style='color:#808030; '>,</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>title center</span><span style='color:#800000; '>"</span><span style='color:#808030; '>,</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>fade</span><span style='color:#800000; '>"</span><span style='color:#808030; '>,</span> <span style='color:#008c00; '>1000</span><span style='color:#808030; '>,</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>linear</span><span style='color:#800000; '>"</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span><br/>
-				myObject<span style='color:#808030; '>.</span>go<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span><span style='color:#800080; '>;</span>
-				</div>
-				<div class="ABox" style="margin-right:150px;float:right;width:200px;height:140px;overflow:visible"><div id="ContainerDiv"></div><a onclick='ExContainerDiv();return false' href='#_blank' class='Button blue' style="position:absolute;left:45px;top:150px;width:100px;font-size:20px;padding:7px 6px;z-index:3">Run the code</a></div>
-				</div>
-				<br/><br/>
-				
-				<div style="color:rgb(129, 35, 33);font-size:30px;font-weight:bold">Commands</div>
-				
-				<div class="DocSubtitle">addText</div>
-				<ul class="DocSubText">
-				<li>Syntax: <div class="Code"><span style='color:#808030; '>.</span>addText<span style='color:#808030; '>(</span>TheText<span style='color:#808030; '>,</span> <span style='color:#808030; '>[</span>x<span style='color:#808030; '>]</span><span style='color:#808030; '>,</span><span style='color:#808030; '>[</span>y<span style='color:#808030; '>]</span><span style='color:#808030; '>,</span> <span style='color:#808030; '>[</span>ClassName<span style='color:#808030; '>]</span><span style='color:#808030; '>,</span> <span style='color:#808030; '>[</span>ShowType<span style='color:#808030; '>]</span><span style='color:#808030; '>,</span> <span style='color:#808030; '>[</span>Duration<span style='color:#808030; '>]</span><span style='color:#808030; '>,</span> <span style='color:#808030; '>[</span>Easing<span style='color:#808030; '>]</span><span style='color:#808030; '>,</span> <span style='color:#808030; '>[</span>ID<span style='color:#808030; '>]</span><span style='color:#808030; '>,</span> <span style='color:#808030; '>[</span>Freeze<span style='color:#808030; '>]</span><span style='color:#808030; '>)</span></div></li>
-				<li>TheText: the content of the object.</li>
-				<li>x: left position, the default  is 0.</li>
-				<li>y: top position, the default  is 0.</li>
-				<li>ClassName: className of object, you can use this to add additional styles.</li>
-				<li>ShowType: the way you want to show the object, ShowTypes are listed below.</li>
-				<li>Duration: the time it takes to show the object.</li>
-				<li>Easing: the type of the animation's formula. For a clear understanding, see the Easing example.</li>
-				<li>ID: the id of the object, you will need it to control the object in other commands.
-				<br/>caution: be careful with ID, it could conflict with other ids in the page.
-				</li>
-				<li>Freeze: can be true or (false or null); use this if you want to freeze the timeline until the object is fully shown.</li>
-				</ul>
+  <div id="app">
 
-				
-				
-				<div class="DocSubtitle">addImage</div>
-				<ul class="DocSubText">
-				<li>Syntax: <div class="Code"><span style='color:#808030; '>.</span>addImage<span style='color:#808030; '>(</span>ImageSRC<span style='color:#808030; '>,</span> <span style='color:#808030; '>[</span>x<span style='color:#808030; '>]</span><span style='color:#808030; '>,</span> <span style='color:#808030; '>[</span>y<span style='color:#808030; '>]</span><span style='color:#808030; '>,</span> <span style='color:#808030; '>[</span>w<span style='color:#808030; '>]</span><span style='color:#808030; '>,</span> <span style='color:#808030; '>[</span>h<span style='color:#808030; '>]</span><span style='color:#808030; '>,</span> <span style='color:#808030; '>[</span>ShowType<span style='color:#808030; '>]</span><span style='color:#808030; '>,</span> <span style='color:#808030; '>[</span>Duration<span style='color:#808030; '>]</span><span style='color:#808030; '>,</span> <span style='color:#808030; '>[</span>Easing<span style='color:#808030; '>]</span><span style='color:#808030; '>,</span> <span style='color:#808030; '>[</span>ID<span style='color:#808030; '>]</span><span style='color:#808030; '>,</span> <span style='color:#808030; '>[</span>Freeze<span style='color:#808030; '>]</span><span style='color:#808030; '>)</span></div></li>
-				<li>ImageSRC: the source of the image.</li>
-				<li>x: left position, the default  is 0.</li>
-				<li>y: top position, the default  is 0.</li>
-				<li>w: width; if the value is null or empty string, the width will be auto.</li>
-				<li>h: height; if the value is null or empty string, the height will be auto.</li>
-				<li>ShowType: the way you want to show the object, ShowTypes are listed below.</li>
-				<li>Duration: the time it takes to show the object.</li>
-				<li>Easing: the type of the animation's formula.</li>
-				<li>ID: the id of the object, you will need it to control the object in other commands.</li>
-				<li>Freeze: if true, the timeline will remain frozen until the object is fully shown.</li>
-				</ul>
+    <header id="site-header">
+      <div class="site-logo">
+        <img src="files/logo.png" alt="BoardJS" onerror="this.style.display='none'">
+        BoardJS
+      </div>
+      <nav class="header-links" aria-label="Site navigation">
+        <a href="index.html">Examples</a>
+        <a href="https://github.com" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </header>
 
-				
-				<div class="DocSubtitle">delay</div>
-				<ul class="DocSubText">
-				<li>Syntax: <div class="Code"><span style='color:#808030; '>.</span>delay<span style='color:#808030; '>(</span>HowLong<span style='color:#808030; '>)</span></div></li>
-				<li>Freezes the timeline for a specified period of time.</li>
-				<li>HowLong is a numeric value in milliseconds (1000 = 1 second)</li>
-				</ul>
-				
-				
-				<div class="DocSubtitle">background</div>
-				<ul class="DocSubText">
-				<li>Syntax: <div class="Code"><span style='color:#808030; '>.</span>background    <span style='color:#808030; '>(</span>ImageSRC <span style='color:#808030; '>|</span> HexColor <span style='color:#808030; '>|</span> RGBColor <span style='color:#808030; '>|</span> RGBAColor<span style='color:#808030; '>,</span> <span style='color:#808030; '>[</span>VisibilityDuration<span style='color:#808030; '>]</span><span style='color:#808030; '>,</span> <span style='color:#808030; '>[</span>Freeze<span style='color:#808030; '>]</span><span style='color:#808030; '>)</span></div></li>
-				<li>Changes the background of the board, you can set a color or an image background.</li>
-				<li>ImageSRC: source of the image.</li>
-				<li>HexColor: to set a color with a hex value (ex: #0099ff)</li>
-				<li>RGBColor: to set a color with an RGB value (ex: rgb(0, 128, 255))</li>
-				<li>RGBAColor: to set a color with an RGBA value (ex: rgba(0, 128, 255, 0.5))</li>
-				<li>VisibilityDuration: the time it takes to show the background using fade effect with a linear movement.</li>
-				<li>Freeze: if true, the timeline will remain frozen until the background is fully shown.</li>
-				</ul>
-				
+    <main class="doc-wrap">
 
-				<div class="DocSubtitle">flash</div>
-				<ul class="DocSubText">
-				<li>Syntax: <div class="Code"><span style='color:#808030; '>.</span>flash<span style='color:#808030; '>(</span>IDs<span style='color:#808030; '>,</span> HowMany<span style='color:#808030; '>,</span> <span style='color:#808030; '>[</span>Duration<span style='color:#808030; '>]</span><span style='color:#808030; '>,</span> <span style='color:#808030; '>[</span>Freeze<span style='color:#808030; '>]</span><span style='color:#808030; '>)</span></div></li>
-				<li>Following on from this command, all of the commands are for controlling the objects and the timeline.</li>
-				<li>This command is for flashing the selected object(s), it fades it in and out for several times depending on the "HowMany" value.</li>
-				<li>IDs: id of the target, IDs means that you can specify more than one target (ex: "id1 id2 id3")</li>
-				<li>HowMany: specifies the times you want to apply the flash. If the value is "always", it will flash forever.</li>
-				<li>Duration: the duration of each fading process in milliseconds.</li>
-				<li>Freeze: if true, the timeline will remain frozen until the flash is finished.</li>
-				</ul>
-				
+      <!-- ── Overview ─────────────────────────────────────────── -->
+      <section class="doc-section">
+        <h2>Overview</h2>
+        <p>BoardJS is a timeline-based animation library for building presentations, stories, and interactive ads. You describe what happens using a chain of commands, then call <code>.go()</code> — the library plays them back as a synchronized sequence.</p>
+        <ul>
+          <li>No dependencies — pure JavaScript, CSS, and HTML</li>
+          <li>Declarative API using options objects — no positional guessing</li>
+          <li>60 fps animations via <code>requestAnimationFrame</code></li>
+          <li>Multi-ID targeting — apply a command to several elements at once</li>
+          <li>Optional SoundManager2 integration for audio</li>
+        </ul>
+      </section>
 
-				<div class="DocSubtitle">fadeOut</div>
-				<ul class="DocSubText">
-				<li>Syntax: <div class="Code"><span style='color:#808030; '>.</span>fadeOut<span style='color:#808030; '>(</span>IDs<span style='color:#808030; '>,</span> Duration<span style='color:#808030; '>,</span> <span style='color:#808030; '>[</span>Freeze<span style='color:#808030; '>]</span><span style='color:#808030; '>)</span></div></li>
-				<li>Hide the target by fading it smoothly.</li>
-				<li>IDs: the target.</li>
-				<li>Duration: the duration of the fading process in milliseconds</li>
-				<li>Freeze: if true, the timeline will remain frozen until the target is hidden.</li>
-				</ul>
+      <!-- ── Setup ─────────────────────────────────────────────── -->
+      <section class="doc-section">
+        <h2>Setup</h2>
+        <p>Include the library, then create a <code>BoardJS</code> instance pointing at a container element:</p>
+        <pre><span class="kw">const</span> board = <span class="kw">new</span> <span class="fn">BoardJS</span>(<span class="str">'myContainer'</span>);</pre>
+        <p>Chain commands and call <code>.go()</code> to start:</p>
+        <pre>board
+  .<span class="fn">background</span>(<span class="str">'rgb(30,60,120)'</span>, { duration: <span class="num">600</span> })
+  .<span class="fn">text</span>(<span class="str">'Hello, World!'</span>, { x: <span class="num">0</span>, y: <span class="num">160</span>, class: <span class="str">'title center'</span>, show: <span class="str">'fade'</span>, duration: <span class="num">1000</span>, wait: <span class="kw">true</span> })
+  .<span class="fn">delay</span>(<span class="num">1500</span>)
+  .<span class="fn">go</span>();</pre>
+        <p>Call <code>.reset()</code> at the start of any function that reloads the board — it clears the stage and cancels any running animations:</p>
+        <pre>board.<span class="fn">reset</span>()
+  .<span class="fn">text</span>(<span class="str">'New content'</span>, { y: <span class="num">100</span>, class: <span class="str">'title center'</span>, show: <span class="str">'fade'</span>, duration: <span class="num">800</span> })
+  .<span class="fn">go</span>();</pre>
+      </section>
 
+      <!-- ── Constants ─────────────────────────────────────────── -->
+      <section class="doc-section">
+        <h2>Constants</h2>
+        <p>Plain strings always work. These constants exist to catch typos at development time:</p>
+        <pre><span class="cm">// Show types</span>
+BoardJS.SHOW.APPEAR      <span class="cm">// 'appear'</span>
+BoardJS.SHOW.FADE        <span class="cm">// 'fade'</span>
+BoardJS.SHOW.ZOOM        <span class="cm">// 'zoom'</span>
+BoardJS.SHOW.SPLIT       <span class="cm">// 'split'  (text only)</span>
+BoardJS.SHOW.FROM_LEFT   <span class="cm">// 'fromleft'</span>
+BoardJS.SHOW.FROM_RIGHT  <span class="cm">// 'fromright'</span>
+BoardJS.SHOW.FROM_TOP    <span class="cm">// 'fromtop'</span>
+BoardJS.SHOW.FROM_BOTTOM <span class="cm">// 'frombottom'</span>
 
-				<div class="DocSubtitle">fadeIn</div>
-				<ul class="DocSubText">
-				<li>Syntax: <div class="Code"><span style='color:#808030; '>.</span>fadeIn<span style='color:#808030; '>(</span>IDs<span style='color:#808030; '>,</span> Duration<span style='color:#808030; '>,</span> <span style='color:#808030; '>[</span>Freeze<span style='color:#808030; '>]</span><span style='color:#808030; '>)</span></div></li>
-				<li>Shows the target by fading it smoothly.</li>
-				<li>IDs: the target.</li>
-				<li>Duration: the duration of the fading process in milliseconds</li>
-				<li>Freeze: if true, the timeline will remain frozen until the target is fully shown.</li>
-				</ul>
-				
-				
-				<div class="DocSubtitle">moveTo</div>
-				<ul class="DocSubText">
-				<li>Syntax: <div class="Code"><span style='color:#808030; '>.</span>moveTo<span style='color:#808030; '>(</span>IDs<span style='color:#808030; '>,</span> <span style='color:#808030; '>[</span>x<span style='color:#808030; '>]</span><span style='color:#808030; '>,</span> <span style='color:#808030; '>[</span>y<span style='color:#808030; '>]</span><span style='color:#808030; '>,</span> <span style='color:#808030; '>[</span>Duration<span style='color:#808030; '>]</span><span style='color:#808030; '>,</span> <span style='color:#808030; '>[</span>Easing<span style='color:#808030; '>]</span><span style='color:#808030; '>,</span> <span style='color:#808030; '>[</span>Freeze<span style='color:#808030; '>]</span><span style='color:#808030; '>)</span></div></li>
-				<li>Moves the target from its position to a new one.</li>
-				<li>IDs: the Target.</li>
-				<li>x: the new left position. If the value is null or empty, the left position will remain the same.</li>
-				<li>y: the new top position. If the value is null or empty, the top position will remain the same.</li>
-				<li>Duration: the time it takes to finish the movement.</li>
-				<li>Easing: the type of the animation's formula.</li>
-				<li>Freeze: freezes the timeline until this command is completed.</li>
-				</ul>
-				
-				
-				<div class="DocSubtitle">remove</div>
-				<ul class="DocSubText">
-				<li>Syntax: <div class="Code"><span style='color:#808030; '>.</span>remove<span style='color:#808030; '>(</span>IDs<span style='color:#808030; '>)</span></div></li>
-				<li>Removes the target.</li>
-				<li>IDs: the target</li>
-				</ul>
-				
-				
-				<div class="DocSubtitle">addTooltip</div>
-				<ul class="DocSubText">
-				<li>Syntax: <div class="Code"><span style='color:#808030; '>.</span>addTooltip<span style='color:#808030; '>(</span>IDs<span style='color:#808030; '>,</span> Content<span style='color:#808030; '>)</span></div></li>
-				<li>Adds a tooltip to the target to be shown when you move the cursor upon it.</li>
-				<li>IDs: the target</li>
-				<li>Content: the content of the tooltip.</li>
-				</ul>
+<span class="cm">// Easing types</span>
+BoardJS.EASE.LINEAR   <span class="cm">// 'linear'</span>
+BoardJS.EASE.IN       <span class="cm">// 'easein'</span>
+BoardJS.EASE.OUT      <span class="cm">// 'easeout'</span>
+BoardJS.EASE.BACK_IN  <span class="cm">// 'backin'</span>
+BoardJS.EASE.BACK_OUT <span class="cm">// 'backout'</span>
+BoardJS.EASE.ELASTIC  <span class="cm">// 'elastic'</span>
+BoardJS.EASE.BOUNCE   <span class="cm">// 'bounce'</span></pre>
+        <p>Combine multiple show types as a space-separated string: <code>'fade fromleft'</code></p>
+      </section>
 
-				
-				<div class="DocSubtitle">removeTooltip</div>
-				<ul class="DocSubText">
-				<li>Syntax: <div class="Code"><span style='color:#808030; '>.</span>removeTooltip<span style='color:#808030; '>(</span>IDs<span style='color:#808030; '>)</span></div></li>
-				<li>Removes the recently added tooltip.</li>
-				<li>IDs: the target</li>
-				</ul>
+      <!-- ── Commands ──────────────────────────────────────────── -->
+      <section class="doc-section">
+        <h2>Commands</h2>
 
+        <!-- text -->
+        <div class="method">
+          <div class="method-name">.text(content, opts)</div>
+          <div class="method-desc">Add a text element to the stage.</div>
+          <table class="params">
+            <tr><th>Parameter</th><th>Default</th><th>Description</th></tr>
+            <tr><td>content</td><td>—</td><td>Plain text or safe HTML (<code>&lt;b&gt;</code>, <code>&lt;a&gt;</code>, <code>&lt;br&gt;</code>). Script tags and inline event handlers are stripped.</td></tr>
+            <tr><td>opts.x <span class="badge opt">optional</span></td><td>0</td><td>Left position in px.</td></tr>
+            <tr><td>opts.y <span class="badge opt">optional</span></td><td>0</td><td>Top position in px.</td></tr>
+            <tr><td>opts.class <span class="badge opt">optional</span></td><td>''</td><td>CSS class(es) to apply — <code>title</code>, <code>description</code>, <code>Button</code>, or any custom class.</td></tr>
+            <tr><td>opts.show <span class="badge opt">optional</span></td><td>'appear'</td><td>Entrance animation. See constants above. Combine with a space: <code>'fade fromtop'</code>.</td></tr>
+            <tr><td>opts.duration <span class="badge opt">optional</span></td><td>400</td><td>Animation duration in ms.</td></tr>
+            <tr><td>opts.easing <span class="badge opt">optional</span></td><td>'linear'</td><td>Easing formula.</td></tr>
+            <tr><td>opts.id <span class="badge opt">optional</span></td><td>auto</td><td>Element ID — required if you want to reference this element later.</td></tr>
+            <tr><td>opts.wait <span class="badge opt">optional</span></td><td>false</td><td>When <code>true</code>, the timeline pauses until the entrance animation finishes.</td></tr>
+          </table>
+          <pre>board.<span class="fn">text</span>(<span class="str">'Hello!'</span>, { x: <span class="num">0</span>, y: <span class="num">80</span>, class: <span class="str">'title center'</span>, show: <span class="str">'fade'</span>, duration: <span class="num">800</span>, id: <span class="str">'headline'</span>, wait: <span class="kw">true</span> })</pre>
+        </div>
 
-				<div class="DocSubtitle">showTooltip</div>
-				<ul class="DocSubText">
-				<li>Syntax: <div class="Code"><span style='color:#808030; '>.</span>showTooltip<span style='color:#808030; '>(</span>IDs<span style='color:#808030; '>,</span> Content<span style='color:#808030; '>,</span> <span style='color:#808030; '>[</span>LifeTime<span style='color:#808030; '>]</span><span style='color:#808030; '>,</span> <span style='color:#808030; '>[</span>Freeze<span style='color:#808030; '>]</span><span style='color:#808030; '>)</span></div></li>
-				<li>Shows a tooltip above the target for a specified period of time.</li>
-				<li>IDs: the target</li>
-				<li>Content: the content of the tooltip.</li>
-				<li>LifeTime: specifies the time you want the tooltip to be visible. If this value is "always", it will still visible until you use removeTooltip.</li>
-				<li>Freeze: freezes the timeline until the tooltip is removed.</li>
-				</ul>
+        <!-- image -->
+        <div class="method">
+          <div class="method-name">.image(src, opts)</div>
+          <div class="method-desc">Add an image element to the stage.</div>
+          <table class="params">
+            <tr><th>Parameter</th><th>Default</th><th>Description</th></tr>
+            <tr><td>src</td><td>—</td><td>Image path.</td></tr>
+            <tr><td>opts.x <span class="badge opt">optional</span></td><td>0</td><td>Left position in px.</td></tr>
+            <tr><td>opts.y <span class="badge opt">optional</span></td><td>0</td><td>Top position in px.</td></tr>
+            <tr><td>opts.width <span class="badge opt">optional</span></td><td>auto</td><td>Explicit width in px. Omit to use the image's natural width.</td></tr>
+            <tr><td>opts.height <span class="badge opt">optional</span></td><td>auto</td><td>Explicit height in px.</td></tr>
+            <tr><td>opts.show <span class="badge opt">optional</span></td><td>'appear'</td><td>Entrance animation.</td></tr>
+            <tr><td>opts.duration <span class="badge opt">optional</span></td><td>400</td><td>Animation duration in ms.</td></tr>
+            <tr><td>opts.easing <span class="badge opt">optional</span></td><td>'linear'</td><td>Easing formula.</td></tr>
+            <tr><td>opts.id <span class="badge opt">optional</span></td><td>auto</td><td>Element ID.</td></tr>
+            <tr><td>opts.wait <span class="badge opt">optional</span></td><td>false</td><td>Pause timeline until animation finishes.</td></tr>
+          </table>
+          <pre>board.<span class="fn">image</span>(<span class="str">'logo.png'</span>, { x: <span class="num">270</span>, y: <span class="num">157</span>, show: <span class="str">'fade zoom'</span>, duration: <span class="num">500</span>, easing: <span class="str">'backout'</span>, id: <span class="str">'logo'</span>, wait: <span class="kw">true</span> })</pre>
+        </div>
 
+        <!-- background -->
+        <div class="method">
+          <div class="method-name">.background(src, opts)</div>
+          <div class="method-desc">Set the stage background to a color or an image.</div>
+          <table class="params">
+            <tr><th>Parameter</th><th>Default</th><th>Description</th></tr>
+            <tr><td>src</td><td>—</td><td>CSS color (<code>'#ff0'</code>, <code>'rgb(…)'</code>, <code>'rgba(…)'</code>) or image path.</td></tr>
+            <tr><td>opts.duration <span class="badge opt">optional</span></td><td>500</td><td>Fade-in duration in ms.</td></tr>
+            <tr><td>opts.wait <span class="badge opt">optional</span></td><td>false</td><td>Pause timeline until background is fully visible.</td></tr>
+          </table>
+          <pre>board.<span class="fn">background</span>(<span class="str">'rgb(20, 40, 80)'</span>, { duration: <span class="num">800</span> })
+board.<span class="fn">background</span>(<span class="str">'hero.jpg'</span>, { duration: <span class="num">1200</span>, wait: <span class="kw">true</span> })</pre>
+        </div>
 
-				<div class="DocSubtitle">html</div>
-				<ul class="DocSubText">
-				<li>Syntax: <div class="Code"><span style='color:#808030; '>.</span>html<span style='color:#808030; '>(</span>IDs<span style='color:#808030; '>,</span> Content<span style='color:#808030; '>)</span></div></li>
-				<li>Changes the content of the text object.</li>
-				<li>IDs: the target</li>
-				<li>Content: the content of the object.</li>
-				</ul>
-				
+        <!-- delay -->
+        <div class="method">
+          <div class="method-name">.delay(ms)</div>
+          <div class="method-desc">Pause the timeline for a fixed amount of time.</div>
+          <table class="params">
+            <tr><th>Parameter</th><th>Default</th><th>Description</th></tr>
+            <tr><td>ms</td><td>—</td><td>Duration in milliseconds.</td></tr>
+          </table>
+          <pre>board.<span class="fn">delay</span>(<span class="num">2000</span>) <span class="cm">// pause for 2 seconds</span></pre>
+        </div>
 
-				<div class="DocSubtitle">setStyle</div>
-				<ul class="DocSubText">
-				<li>Syntax: <div class="Code"><span style='color:#808030; '>.</span>setStyle<span style='color:#808030; '>(</span>IDs<span style='color:#808030; '>,</span> Style<span style='color:#808030; '>)</span></div></li>
-				<li>Changes the style of the object.</li>
-				<li>IDs: the target</li>
-				<li>Style: the new style, the syntax is the same of the inline style (ex: "border:2px solid #000;margin:10px")</li>
-				</ul>
-				
+        <!-- move -->
+        <div class="method">
+          <div class="method-name">.move(id, opts)</div>
+          <div class="method-desc">Animate an element to new coordinates.</div>
+          <table class="params">
+            <tr><th>Parameter</th><th>Default</th><th>Description</th></tr>
+            <tr><td>id</td><td>—</td><td>Target element ID.</td></tr>
+            <tr><td>opts.x <span class="badge opt">optional</span></td><td>unchanged</td><td>New left position in px.</td></tr>
+            <tr><td>opts.y <span class="badge opt">optional</span></td><td>unchanged</td><td>New top position in px.</td></tr>
+            <tr><td>opts.duration <span class="badge opt">optional</span></td><td>600</td><td>Animation duration in ms.</td></tr>
+            <tr><td>opts.easing <span class="badge opt">optional</span></td><td>'linear'</td><td>Easing formula.</td></tr>
+            <tr><td>opts.wait <span class="badge opt">optional</span></td><td>false</td><td>Pause timeline until move finishes.</td></tr>
+          </table>
+          <pre>board.<span class="fn">move</span>(<span class="str">'logo'</span>, { x: <span class="num">100</span>, y: <span class="num">200</span>, duration: <span class="num">800</span>, easing: <span class="str">'backout'</span>, wait: <span class="kw">true</span> })</pre>
+        </div>
 
-				<div class="DocSubtitle">changeImage</div>
-				<ul class="DocSubText">
-				<li>Syntax: <div class="Code"><span style='color:#808030; '>.</span>changeImage<span style='color:#808030; '>(</span>IDs<span style='color:#808030; '>,</span> ImageSRC<span style='color:#808030; '>)</span></div></li>
-				<li>Changes the image of the image object.</li>
-				<li>IDs: the target</li>
-				<li>ImageSRC: the source of the image.</li>
-				</ul>
-				
+        <!-- fadeIn / fadeOut -->
+        <div class="method">
+          <div class="method-name">.fadeIn(id, opts) &nbsp;/&nbsp; .fadeOut(id, opts)</div>
+          <div class="method-desc">Smoothly show or hide an element.</div>
+          <table class="params">
+            <tr><th>Parameter</th><th>Default</th><th>Description</th></tr>
+            <tr><td>id</td><td>—</td><td>Target element ID.</td></tr>
+            <tr><td>opts.duration <span class="badge opt">optional</span></td><td>500</td><td>Fade duration in ms.</td></tr>
+            <tr><td>opts.wait <span class="badge opt">optional</span></td><td>false</td><td>Pause timeline until complete.</td></tr>
+          </table>
+          <pre>board.<span class="fn">fadeOut</span>(<span class="str">'headline'</span>, { duration: <span class="num">400</span>, wait: <span class="kw">true</span> })
+board.<span class="fn">fadeIn</span>(<span class="str">'headline'</span>, { duration: <span class="num">600</span> })</pre>
+        </div>
 
-				<div class="DocSubtitle">addEvent</div>
-				<ul class="DocSubText">
-				<li>Syntax: <div class="Code"><span style='color:#808030; '>.</span>addEvent<span style='color:#808030; '>(</span>IDs<span style='color:#808030; '>,</span> TheEvent<span style='color:#808030; '>,</span> TheFunction<span style='color:#808030; '>)</span></div></li>
-				<li>Registers functions with any event of the target such as click.</li>
-				<li>IDs: the target</li>
-				<li>TheEvent: click, mouseover...; note: don't use the prefix "on".</li>
-				<li>TheFunction: the function you want to call, such as: function(){alert("Hello World")}</li>
-				</ul>
-				
+        <!-- flash -->
+        <div class="method">
+          <div class="method-name">.flash(id, opts)</div>
+          <div class="method-desc">Blink an element by fading it in and out repeatedly.</div>
+          <table class="params">
+            <tr><th>Parameter</th><th>Default</th><th>Description</th></tr>
+            <tr><td>id</td><td>—</td><td>Target element ID.</td></tr>
+            <tr><td>opts.count <span class="badge opt">optional</span></td><td>3</td><td>Number of blinks, or <code>'always'</code> to blink indefinitely.</td></tr>
+            <tr><td>opts.duration <span class="badge opt">optional</span></td><td>400</td><td>Duration of each blink cycle in ms.</td></tr>
+            <tr><td>opts.wait <span class="badge opt">optional</span></td><td>false</td><td>Pause timeline until all blinks finish (ignored when <code>count: 'always'</code>).</td></tr>
+          </table>
+          <pre>board.<span class="fn">flash</span>(<span class="str">'arrow'</span>, { count: <span class="str">'always'</span>, duration: <span class="num">500</span> })</pre>
+        </div>
 
-				<div class="DocSubtitle">removeEvent</div>
-				<ul class="DocSubText">
-				<li>Syntax: <div class="Code"><span style='color:#808030; '>.</span>removeEvent<span style='color:#808030; '>(</span>IDs<span style='color:#808030; '>,</span> TheEvent<span style='color:#808030; '>)</span></div></li>
-				<li>Removes the recently registered event of the target.</li>
-				<li>IDs: the target</li>
-				<li>TheEvent: the event you want to remove.</li>
-				</ul>
-				
+        <!-- rotate -->
+        <div class="method">
+          <div class="method-name">.rotate(id, angle, opts)</div>
+          <div class="method-desc">Rotate an element to an absolute angle.</div>
+          <table class="params">
+            <tr><th>Parameter</th><th>Default</th><th>Description</th></tr>
+            <tr><td>id</td><td>—</td><td>Target element ID.</td></tr>
+            <tr><td>angle</td><td>—</td><td>Target angle in degrees. Positive = clockwise.</td></tr>
+            <tr><td>opts.duration <span class="badge opt">optional</span></td><td>500</td><td>Animation duration in ms.</td></tr>
+            <tr><td>opts.easing <span class="badge opt">optional</span></td><td>'linear'</td><td>Easing formula.</td></tr>
+            <tr><td>opts.wait <span class="badge opt">optional</span></td><td>false</td><td>Pause timeline until rotation finishes.</td></tr>
+          </table>
+          <pre>board.<span class="fn">rotate</span>(<span class="str">'wheel'</span>, <span class="num">-90</span>, { duration: <span class="num">1000</span>, easing: <span class="str">'easeout'</span>, wait: <span class="kw">true</span> })</pre>
+        </div>
 
-				<div class="DocSubtitle">hover</div>
-				<ul class="DocSubText">
-				<li>Syntax: <div class="Code"><span style='color:#808030; '>.</span>hover<span style='color:#808030; '>(</span>IDs<span style='color:#808030; '>,</span> Style<span style='color:#808030; '>,</span> <span style='color:#808030; '>[</span>Duration<span style='color:#808030; '>]</span><span style='color:#808030; '>,</span> <span style='color:#808030; '>[</span>Easing<span style='color:#808030; '>]</span><span style='color:#808030; '>)</span></div></li>
-				<li>Changes the style of the target on hovering, same as CSS :hover.</li>
-				<li>IDs: the target.</li>
-				<li>Style: the style to be applied when hovering with the addition of "scale" and "rotate", such as "rotate:100;scale:2;border:2px solid"</li>
-				<li>Duration: the time it takes to fully apply the new styles.</li>
-				<li>Easing: the type of the animation's formula.</li>
-				</ul>
-				
+        <!-- zoom -->
+        <div class="method">
+          <div class="method-name">.zoom(id, scale, opts)</div>
+          <div class="method-desc">Scale an element. <code>1</code> is the original size.</div>
+          <table class="params">
+            <tr><th>Parameter</th><th>Default</th><th>Description</th></tr>
+            <tr><td>id</td><td>—</td><td>Target element ID.</td></tr>
+            <tr><td>scale</td><td>—</td><td>Target scale factor. <code>2</code> = double size, <code>0.5</code> = half.</td></tr>
+            <tr><td>opts.duration <span class="badge opt">optional</span></td><td>500</td><td>Animation duration in ms.</td></tr>
+            <tr><td>opts.easing <span class="badge opt">optional</span></td><td>'linear'</td><td>Easing formula.</td></tr>
+            <tr><td>opts.wait <span class="badge opt">optional</span></td><td>false</td><td>Pause timeline until scaling finishes.</td></tr>
+          </table>
+          <pre>board.<span class="fn">zoom</span>(<span class="str">'logo'</span>, <span class="num">1.5</span>, { duration: <span class="num">400</span>, easing: <span class="str">'backout'</span> })</pre>
+        </div>
 
-				<div class="DocSubtitle">unHover</div>
-				<ul class="DocSubText">
-				<li>Syntax: <div class="Code"><span style='color:#808030; '>.</span>unHover<span style='color:#808030; '>(</span>IDs<span style='color:#808030; '>)</span></div></li>
-				<li>Cancels the hover command of the target.</li>
-				<li>IDs: the target.</li>
-				</ul>
-				
+        <!-- style -->
+        <div class="method">
+          <div class="method-name">.style(id, css)</div>
+          <div class="method-desc">Apply inline CSS to an element. The string is merged into the element's existing style.</div>
+          <table class="params">
+            <tr><th>Parameter</th><th>Default</th><th>Description</th></tr>
+            <tr><td>id</td><td>—</td><td>Target element ID.</td></tr>
+            <tr><td>css</td><td>—</td><td>Inline CSS string, e.g. <code>'color:red; font-size:20px'</code></td></tr>
+          </table>
+          <pre>board.<span class="fn">style</span>(<span class="str">'headline'</span>, <span class="str">'font-size:42px; letter-spacing:2px'</span>)</pre>
+        </div>
 
-				<div class="DocSubtitle">merge</div>
-				<ul class="DocSubText">
-				<li>Syntax: <div class="Code"><span style='color:#808030; '>.</span>merge<span style='color:#808030; '>(</span>IDs<span style='color:#808030; '>,</span> MergeWith<span style='color:#808030; '>)</span></div></li>
-				<li>Merges the target with another object and you will still can control it.</li>
-				<li>IDs: the target.</li>
-				<li>MergeWith: the object you want the target to be merged with.</li>
-				</ul>
-				
+        <!-- html -->
+        <div class="method">
+          <div class="method-name">.html(id, content)</div>
+          <div class="method-desc">Replace the inner HTML of a text element.</div>
+          <table class="params">
+            <tr><th>Parameter</th><th>Default</th><th>Description</th></tr>
+            <tr><td>id</td><td>—</td><td>Target element ID.</td></tr>
+            <tr><td>content</td><td>—</td><td>New HTML content.</td></tr>
+          </table>
+          <pre>board.<span class="fn">html</span>(<span class="str">'counter'</span>, <span class="str">'Score: &lt;b&gt;42&lt;/b&gt;'</span>)</pre>
+        </div>
 
-				<div class="DocSubtitle">unMerge</div>
-				<ul class="DocSubText">
-				<li>Syntax: <div class="Code"><span style='color:#808030; '>.</span>unMerge<span style='color:#808030; '>(</span>IDs<span style='color:#808030; '>)</span></div></li>
-				<li>Unmerges the recently merged objects.</li>
-				<li>IDs: the target</li>
-				</ul>
-				
+        <!-- remove -->
+        <div class="method">
+          <div class="method-name">.remove(id)</div>
+          <div class="method-desc">Remove one or more elements from the stage. Pass space-separated IDs to remove multiple.</div>
+          <pre>board.<span class="fn">remove</span>(<span class="str">'headline subline logo'</span>)</pre>
+        </div>
 
-				<div class="DocSubtitle">rotate</div>
-				<ul class="DocSubText">
-				<li>Syntax: <div class="Code"><span style='color:#808030; '>.</span>rotate<span style='color:#808030; '>(</span>IDs<span style='color:#808030; '>,</span> Angle<span style='color:#808030; '>,</span> <span style='color:#808030; '>[</span>Duration<span style='color:#808030; '>]</span><span style='color:#808030; '>,</span> <span style='color:#808030; '>[</span>Easing<span style='color:#808030; '>]</span><span style='color:#808030; '>,</span> <span style='color:#808030; '>[</span>Freeze<span style='color:#808030; '>]</span><span style='color:#808030; '>)</span></div></li>
-				<li>Rotates the target with a specified angle with ease, requires css3.</li>
-				<li>IDs: the target</li>
-				<li>Angle: the angle in degrees.</li>
-				<li>Duration: the time it takes to fully apply the rotation.</li>
-				<li>Easing: the type of the animation's formula.</li>
-				<li>Freeze: freezes the timeline until the rotation is finished.</li>
-				</ul>
-				
+        <!-- changeImage -->
+        <div class="method">
+          <div class="method-name">.changeImage(id, src)</div>
+          <div class="method-desc">Swap the source of an image element.</div>
+          <table class="params">
+            <tr><th>Parameter</th><th>Default</th><th>Description</th></tr>
+            <tr><td>id</td><td>—</td><td>Target image element ID.</td></tr>
+            <tr><td>src</td><td>—</td><td>New image path.</td></tr>
+          </table>
+          <pre>board.<span class="fn">changeImage</span>(<span class="str">'avatar'</span>, <span class="str">'images/user2.jpg'</span>)</pre>
+        </div>
 
-				<div class="DocSubtitle">zoom</div>
-				<ul class="DocSubText">
-				<li>Syntax: <div class="Code"><span style='color:#808030; '>.</span>zoom<span style='color:#808030; '>(</span>IDs<span style='color:#808030; '>,</span> Scale<span style='color:#808030; '>,</span> <span style='color:#808030; '>[</span>Duration<span style='color:#808030; '>]</span><span style='color:#808030; '>,</span> <span style='color:#808030; '>[</span>Easing<span style='color:#808030; '>]</span><span style='color:#808030; '>,</span> <span style='color:#808030; '>[</span>Freeze<span style='color:#808030; '>]</span><span style='color:#808030; '>)</span></div></li>
-				<li>Scales the target with a specified scale value with ease, requires css3.</li>
-				<li>IDs: the target</li>
-				<li>Scale: the Scale value, 1 is the original size.</li>
-				<li>Duration: the time it takes to fully apply the scaling.</li>
-				<li>Easing: the type of the animation's formula.</li>
-				<li>Freeze: freezes the timeline until the scaling is finished.</li>
-				</ul>
-				
+        <!-- on / off -->
+        <div class="method">
+          <div class="method-name">.on(id, event, fn) &nbsp;/&nbsp; .off(id, event)</div>
+          <div class="method-desc">Attach or remove a DOM event listener. Multiple IDs can be space-separated.</div>
+          <table class="params">
+            <tr><th>Parameter</th><th>Default</th><th>Description</th></tr>
+            <tr><td>id</td><td>—</td><td>Target element ID(s).</td></tr>
+            <tr><td>event</td><td>—</td><td>Event name without <code>on</code> prefix — e.g. <code>'click'</code>, <code>'mouseover'</code>.</td></tr>
+            <tr><td>fn</td><td>—</td><td>Handler function. <code>this</code> is the element, so <code>this.id</code> gives the element's ID.</td></tr>
+          </table>
+          <pre>board.<span class="fn">on</span>(<span class="str">'btn1 btn2'</span>, <span class="str">'click'</span>, <span class="kw">function</span>() {
+  board.<span class="fn">html</span>(<span class="str">'info'</span>, <span class="str">`Clicked: </span>${<span class="kw">this</span>.id}<span class="str">`</span>);
+})</pre>
+        </div>
 
-				<div class="DocSubtitle">circle</div>
-				<ul class="DocSubText">
-				<li>Syntax: <div class="Code"><span style='color:#808030; '>.</span>circle<span style='color:#808030; '>(</span>IDs<span style='color:#808030; '>,</span> <span style='color:#808030; '>[</span>AdditionalStyles<span style='color:#808030; '>]</span><span style='color:#808030; '>)</span></div></li>
-				<li>Applies several styles to the target to be like a circle, requires css3.</li>
-				<li>IDs: the target.</li>
-				<li>AdditionalStyles: extra parameter, same as setStyle command</li>
-				</ul>
-				
+        <!-- hover / unhover -->
+        <div class="method">
+          <div class="method-name">.hover(id, css, opts) &nbsp;/&nbsp; .unhover(id)</div>
+          <div class="method-desc">Apply CSS on mouse-over, revert on mouse-out. Supports the extra properties <code>scale</code> and <code>rotate</code>.</div>
+          <table class="params">
+            <tr><th>Parameter</th><th>Default</th><th>Description</th></tr>
+            <tr><td>id</td><td>—</td><td>Target element ID(s).</td></tr>
+            <tr><td>css</td><td>—</td><td>CSS to apply on hover. Extras: <code>'scale:1.2; rotate:15'</code>.</td></tr>
+            <tr><td>opts.duration <span class="badge opt">optional</span></td><td>300</td><td>Transition duration in ms.</td></tr>
+            <tr><td>opts.easing <span class="badge opt">optional</span></td><td>'linear'</td><td>Easing formula.</td></tr>
+          </table>
+          <pre>board.<span class="fn">hover</span>(<span class="str">'btn'</span>, <span class="str">'scale:1.2; border:2px solid #fff'</span>, { duration: <span class="num">250</span>, easing: <span class="str">'backout'</span> })
+board.<span class="fn">unhover</span>(<span class="str">'btn'</span>) <span class="cm">// cancel hover behaviour</span></pre>
+        </div>
 
-				<div class="DocSubtitle">round</div>
-				<ul class="DocSubText">
-				<li>Syntax: <div class="Code"><span style='color:#808030; '>.</span><span style='color:#800000; font-weight:bold; '>round</span><span style='color:#808030; '>(</span>IDs<span style='color:#808030; '>,</span> TheValue<span style='color:#808030; '>)</span></div></li>
-				<li>Sets the borderRadius of the object, requires css3.</li>
-				<li>IDs: the target.</li>
-				<li>TheValue: the value of the rounded border corners.</li>
-				</ul>
-				
-				<div class="DocSubtitle">playSound</div>
-				<ul class="DocSubText">
-				<li>Syntax: <div class="Code"><span style='color:#808030; '>.</span>playSound<span style='color:#808030; '>(</span>SoundSRC<span style='color:#808030; '>,</span><span style='color:#808030; '>[</span>Freeze<span style='color:#808030; '>]</span><span style='color:#808030; '>)</span></div></li>
-				<li>Plays a sound file using the powerful JavaScript library SoundManager2</li>
-				<li>SoundSRC: the source of the sound file.</li>
-				<li>Freeze: freezes the timeline until the sound is finished.</li>
-				</ul>
-				
+        <!-- tooltip / removeTooltip -->
+        <div class="method">
+          <div class="method-name">.tooltip(id, content) &nbsp;/&nbsp; .removeTooltip(id)</div>
+          <div class="method-desc">Attach a persistent tooltip that appears on mouseover. Remove it with <code>.removeTooltip()</code>.</div>
+          <pre>board.<span class="fn">tooltip</span>(<span class="str">'icon'</span>, <span class="str">'Click to expand'</span>)
+board.<span class="fn">removeTooltip</span>(<span class="str">'icon'</span>)</pre>
+        </div>
 
-				<div class="DocSubtitle">stopSound</div>
-				<ul class="DocSubText">
-				<li>Syntax: <div class="Code"><span style='color:#808030; '>.</span>stopSound<span style='color:#808030; '>(</span><span style='color:#808030; '>[</span>SoundSRC<span style='color:#808030; '>]</span><span style='color:#808030; '>)</span></div></li>
-				<li>Stops the sound.</li>
-				<li>SoundSRC: the source of the sound file. If this value is null or an empty string, all playing sounds will be stopped</li>
-				</ul>
+        <!-- showTooltip -->
+        <div class="method">
+          <div class="method-name">.showTooltip(id, content, opts)</div>
+          <div class="method-desc">Show a tooltip immediately (not on hover) for a fixed duration.</div>
+          <table class="params">
+            <tr><th>Parameter</th><th>Default</th><th>Description</th></tr>
+            <tr><td>id</td><td>—</td><td>Target element ID.</td></tr>
+            <tr><td>content</td><td>—</td><td>Tooltip HTML content.</td></tr>
+            <tr><td>opts.duration <span class="badge opt">optional</span></td><td>null</td><td>How long to display in ms. Omit for permanent (remove manually with <code>.removeTooltip()</code>).</td></tr>
+            <tr><td>opts.wait <span class="badge opt">optional</span></td><td>false</td><td>Pause timeline until tooltip is dismissed (only meaningful when <code>duration</code> is set).</td></tr>
+          </table>
+          <pre>board.<span class="fn">showTooltip</span>(<span class="str">'arrow'</span>, <span class="str">'Click here to begin'</span>, { duration: <span class="num">3000</span> })</pre>
+        </div>
 
-				<div class="DocSubtitle">go</div>
-				<ul class="DocSubText">
-				<li>Syntax: <div class="Code"><span style='color:#808030; '>.</span>go<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span></div></li>
-				<li>Prepares the written commands and begins the show.</li>
-				<li>The presentation will not start until you use this command.</li>
-				</ul>
+        <!-- circle / round -->
+        <div class="method">
+          <div class="method-name">.circle(id, extraCss) &nbsp;/&nbsp; .round(id, radius)</div>
+          <div class="method-desc"><code>.circle()</code> makes an element perfectly circular. <code>.round()</code> sets a specific border-radius value.</div>
+          <pre>board.<span class="fn">circle</span>(<span class="str">'avatar'</span>, <span class="str">'border:3px solid #fff'</span>)
+board.<span class="fn">round</span>(<span class="str">'card'</span>, <span class="num">16</span>)</pre>
+        </div>
 
-				<div class="DocSubtitle">goTo</div>
-				<ul class="DocSubText">
-				<li>Syntax: <div class="Code"><span style='color:#808030; '>.</span>goTo<span style='color:#808030; '>(</span>CommandID<span style='color:#808030; '>)</span></div></li>
-				<li>Written commands have IDs depending on their sequence.</li>
-				<li>This command orders the board to jump to a specified command and and continue normally.</li>
-				<li>Example:</li>
-				</ul>
-				
-				<div class="Code">myObject<span style='color:#808030; '>.</span>addText<span style='color:#808030; '>(</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>Text 1</span><span style='color:#800000; '>"</span><span style='color:#808030; '>)</span> <span style='color:#aaa; '>// This command's id is 0</span><br/>
-				myObject<span style='color:#808030; '>.</span>addText<span style='color:#808030; '>(</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>Text 2</span><span style='color:#800000; '>"</span><span style='color:#808030; '>)</span> <span style='color:#aaa; '>// This command's id is 1</span><br/>
-				myObject<span style='color:#808030; '>.</span>addText<span style='color:#808030; '>(</span><span style='color:#800000; '>"</span><span style='color:#0000e6; '>Text 3</span><span style='color:#800000; '>"</span><span style='color:#808030; '>)</span> <span style='color:#aaa; '>// This command's id is 2</span><br/>
-				myObject<span style='color:#808030; '>.</span>goTo<span style='color:#808030; '>(</span><span style='color:#008c00; '>1</span><span style='color:#808030; '>)</span> <span style='color:#aaa; '>// The board will jump to command 1</span>
-				</div>
-				<br/><br/>
-				
+        <!-- merge / unmerge -->
+        <div class="method">
+          <div class="method-name">.merge(id, parent) &nbsp;/&nbsp; .unmerge(id)</div>
+          <div class="method-desc">Move elements inside a parent so they transform together (useful for rotating a group). Merged children can still be controlled individually. <code>.unmerge()</code> returns them to the stage root.</div>
+          <pre>board.<span class="fn">merge</span>(<span class="str">'item0 item1 item2'</span>, <span class="str">'container'</span>)
+board.<span class="fn">rotate</span>(<span class="str">'container'</span>, <span class="num">90</span>, { duration: <span class="num">800</span> })
+board.<span class="fn">unmerge</span>(<span class="str">'item0 item1 item2'</span>)</pre>
+        </div>
 
-				<div class="DocSubtitle">reset</div>
-				<ul class="DocSubText">
-				<li>Syntax: <div class="Code"><span style='color:#808030; '>.</span>reset<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span></div></li>
-				<li>Stops and cleans the board.</li>
-				<li>Always use this command at the first line of the presentation's code.</li>
-				</ul>
-				
+        <!-- sound / stopSound -->
+        <div class="method">
+          <div class="method-name">.sound(src, opts) &nbsp;/&nbsp; .stopSound(src)</div>
+          <div class="method-desc">Play a sound file using SoundManager2. Pass no argument to <code>.stopSound()</code> to stop all playing sounds.</div>
+          <table class="params">
+            <tr><th>Parameter</th><th>Default</th><th>Description</th></tr>
+            <tr><td>src</td><td>—</td><td>Path to the MP3 file.</td></tr>
+            <tr><td>opts.wait <span class="badge opt">optional</span></td><td>false</td><td>Pause timeline until the sound finishes playing.</td></tr>
+          </table>
+          <pre>board.<span class="fn">sound</span>(<span class="str">'audio/intro.mp3'</span>, { wait: <span class="kw">true</span> })
+board.<span class="fn">stopSound</span>() <span class="cm">// stop all sounds</span></pre>
+          <div class="note">SoundManager2 must be loaded (<code>soundmanager2.js</code>) to use <code>.sound()</code>. If it is absent the command is silently skipped. On iOS, audio can only be triggered by direct user interaction.</div>
+        </div>
 
-				<div class="DocSubtitle">pause</div>
-				<ul class="DocSubText">
-				<li>Syntax: <div class="Code"><span style='color:#808030; '>.</span>pause<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span></div></li>
-				<li>Pauses the timeline, any working commands will remain working until they finish</li>
-				</ul>
-				
-				
-				<div class="DocSubtitle">resume</div>
-				<ul class="DocSubText">
-				<li>Syntax: <div class="Code"><span style='color:#808030; '>.</span>resume<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span></div></li>
-				<li>Continues the timeline. Works only if the board is paused.</li>
-				</ul>
+        <!-- seek -->
+        <div class="method">
+          <div class="method-name">.seek(index)</div>
+          <div class="method-desc">Jump to a specific command index and continue from there. Commands are indexed from 0 in the order they were added.</div>
+          <pre>board
+  .<span class="fn">text</span>(<span class="str">'A'</span>, { y: <span class="num">100</span>, class: <span class="str">'title center'</span> }) <span class="cm">// index 0</span>
+  .<span class="fn">text</span>(<span class="str">'B'</span>, { y: <span class="num">100</span>, class: <span class="str">'title center'</span> }) <span class="cm">// index 1</span>
+  .<span class="fn">seek</span>(<span class="num">0</span>)                                          <span class="cm">// loop back to A</span>
+  .<span class="fn">go</span>()</pre>
+        </div>
 
-				<div class="DocSubtitle">Easings</div>
-				<ul class="DocSubText">
-				<li>Available easings are:</li>
-				<li>linear - easeIn - easeOut - backIn - backOut - elastic - bounce</li>
-				</ul>
+        <!-- pause / resume -->
+        <div class="method">
+          <div class="method-name">.pause() &nbsp;/&nbsp; .resume()</div>
+          <div class="method-desc">Pause and resume timeline playback. Any running animations complete before the timeline stops.</div>
+        </div>
 
-				<div class="DocSubtitle">ShowTypes</div>
-				<ul class="DocSubText">
-				<li>Available ShowTypes are:</li>
-				<li>Appear - Split - Fade - Zoom - FromLeft - FromRight - FromTop - FromBottom</li>
-				<li>Split works only with text objects.</li>
-				<li>You can apply more than one ShowType to an object like: "fade fromBottom"</li>
-				</ul>
+        <!-- reset -->
+        <div class="method">
+          <div class="method-name">.reset()</div>
+          <div class="method-desc">Stop the board, clear all elements, and reset the command queue. Always call this at the start of a new presentation function before chaining new commands.</div>
+          <pre><span class="kw">function</span> <span class="fn">showSlide2</span>() {
+  board.<span class="fn">reset</span>()
+    .<span class="fn">background</span>(<span class="str">'#111'</span>)
+    .<span class="fn">text</span>(<span class="str">'Slide 2'</span>, { y: <span class="num">160</span>, class: <span class="str">'title center'</span>, show: <span class="str">'fade'</span> })
+    .<span class="fn">go</span>();
+}</pre>
+        </div>
 
+        <!-- go -->
+        <div class="method">
+          <div class="method-name">.go(onDone)</div>
+          <div class="method-desc">Preload assets and start playback. Optionally pass a callback that fires when the last command finishes.</div>
+          <pre>board.<span class="fn">go</span>(() => console.<span class="fn">log</span>(<span class="str">'done'</span>))</pre>
+        </div>
 
-				<div style="color:rgb(129, 35, 33);font-size:30px;font-weight:bold">Sound issue</div>
-				Nothing in this world is free from issues.<br/>
-				I am always having problems with sounds, even if I am using the cross browser and platform library soundManager2
-				<br/>
-				In iOS, playing sounds by code without user interference such as onClick is forbidden.<br/>
-				<a style="color:#02a" href="http://developer.apple.com/library/safari/#documentation/AudioVideo/Conceptual/Using_HTML5_Audio_Video/Device-SpecificConsiderations/Device-SpecificConsiderations.html#//apple_ref/doc/uid/TP40009523-CH5-SW1" target="_blank">Click here for details (section: User Control of Downloads Over Cellular Networks)</a>
-				
-				<br/><br/>
-				But the sound works normally with events such as onClick.<br/><br/>
-				Note: If the presentation has no sounds, the board does not ask for soundManager2.<br/>
-				So, if you don't have sounds in your presentations, you don't have to use soundManager2.js at all.
-				
-				
-				
-				<br/><br/>
-				<div style="color:rgb(129, 35, 33);font-size:30px;font-weight:bold">Conclusion</div>
-				The main purpose of BoardJS is to reduce the time of making interactive presentations and to make sure they will work in most browsers.
-				<br/>
-				The Examples use most of the commands, you can find the source in main.js.
-				<br/>
-				Examples are tested on:<br/><br/>
-				Windows:<br/>
-				<ul class="DocSubText">
-				<li>Chromium 21</li>
-				<li>Google Chrome 7</li>
-				<li>Internet Explorer 7 / 8 / 9</li>
-				<li>Firefox 3.5.5 / 3.6.6 / 4 / 17</li>
-				<li>Safari 4.0.3 / 5.1.7</li>
-				<li>Opera 11 / 12.11</li>
-				
-				</ul>
-				
-				Mac OS:<br/>
-				<ul class="DocSubText">
-					<li>Safari 5.1.6</li>
-					<li>Google Chrome 23</li>
-					<li>Firefox 6.0.1</li>
-				</ul>
+      </section>
 
-				
-				Touch devices:<br/>
-				<ul class="DocSubText">
-				<li>Android 4.0.3 (Samsung Galaxy S2)</li>
-				<li>Android 2.3.6 (Samsung Galaxy Ace 2)</li>
-				<li>iPod 4th generation with iOS 6.0 (Sound works with user interaction only)</li>
-				<li>iPad 3rd generation with iOS 6.0.1 (Sound works with user interaction only)</li>
-				</ul>
-				
+      <!-- ── Multi-ID targeting ─────────────────────────────────── -->
+      <section class="doc-section">
+        <h2>Targeting multiple elements</h2>
+        <p>Any command that accepts an <code>id</code> also accepts a space-separated list of IDs. The command is applied to each element in order:</p>
+        <pre>board
+  .<span class="fn">remove</span>(<span class="str">'title subtitle logo'</span>)
+  .<span class="fn">hover</span>(<span class="str">'btn1 btn2 btn3'</span>, <span class="str">'scale:1.2'</span>, { duration: <span class="num">200</span> })
+  .<span class="fn">fadeOut</span>(<span class="str">'overlay mask'</span>, { duration: <span class="num">300</span> })</pre>
+      </section>
 
+      <!-- ── The wait option ───────────────────────────────────── -->
+      <section class="doc-section">
+        <h2>Controlling timeline flow with <code>wait</code></h2>
+        <p>By default each command fires and the timeline immediately advances to the next one. Set <code>wait: true</code> to make the timeline hold until that command fully completes:</p>
+        <pre>board
+  .<span class="fn">text</span>(<span class="str">'First'</span>, { y: <span class="num">100</span>, class: <span class="str">'title center'</span>, show: <span class="str">'fade'</span>, duration: <span class="num">800</span> }) <span class="cm">// fires and moves on immediately</span>
+  .<span class="fn">text</span>(<span class="str">'Second'</span>, { y: <span class="num">200</span>, class: <span class="str">'title center'</span>, show: <span class="str">'fade'</span>, duration: <span class="num">800</span>, wait: <span class="kw">true</span> }) <span class="cm">// waits before continuing</span>
+  .<span class="fn">delay</span>(<span class="num">500</span>)
+  .<span class="fn">text</span>(<span class="str">'Third'</span>, { y: <span class="num">300</span>, class: <span class="str">'title center'</span>, show: <span class="str">'fade'</span>, duration: <span class="num">800</span> })</pre>
+      </section>
 
-				<br/>
-				And of course, Internet Explorer 7 and 8 do not support css3, but the show continues without any interruption.
-				<br/><br/>
-				
-				
-				<div style="color:rgb(129, 35, 33);font-size:30px;font-weight:bold">Submit your own example</div>
-				If you want to submit your own example, don't hesitate, just zip the example and send it to: <div class="Code">DRFERROUS <span style='color:#800080; '>{</span> AT <span style='color:#800080; '>}</span> PORIZM <span style='color:#800080; '>{</span> DOT <span style='color:#800080; '>}</span> COM</div><br/>
-				I don't mind if you made an example as a promotion for a product of yours.
-				<br/><br/>
-				Thank you very much
-				<br/><br/>
-				
-				
-			</div>
-		</div>
-	<div style="clear:both"></div>
-	<div id="TheFooter">
-		© 2010 - 2013 Dr.Fe<span style="text-decoration:underline">rrous</span>
-	</div>
-	</div>
-	<script type="text/javascript">
-	var myObject = BoardJS("ContainerDiv")
-	function ExContainerDiv(){
-		myObject.reset()
-		myObject.background("rgb(78,122,219)", 500);
-		myObject.addText("Hello World", 0, 45, "title center", "fade", 1000, "linear");
-		myObject.go()
-	}
-	</script>
+      <!-- ── Built-in CSS classes ──────────────────────────────── -->
+      <section class="doc-section">
+        <h2>Built-in CSS classes</h2>
+        <p>These classes are defined in <code>styles.css</code> and are ready to use in <code>.text()</code> calls:</p>
+        <table class="params">
+          <tr><th>Class</th><th>Description</th></tr>
+          <tr><td><code>title</code></td><td>Large bold white text, suitable for headings.</td></tr>
+          <tr><td><code>description</code></td><td>Normal weight body text.</td></tr>
+          <tr><td><code>description ar</code></td><td>RTL body text (Arabic / Hebrew).</td></tr>
+          <tr><td><code>center</code></td><td>Full-width centered text. Combine with <code>title</code> or <code>description</code>.</td></tr>
+          <tr><td><code>Button</code></td><td>Styled clickable button.</td></tr>
+        </table>
+      </section>
+
+      <!-- ── Full example ──────────────────────────────────────── -->
+      <section class="doc-section">
+        <h2>Full example</h2>
+        <pre><span class="kw">const</span> board = <span class="kw">new</span> <span class="fn">BoardJS</span>(<span class="str">'TheShow'</span>);
+
+<span class="kw">function</span> <span class="fn">runPresentation</span>() {
+  board.<span class="fn">reset</span>()
+    .<span class="fn">background</span>(<span class="str">'rgb(20, 40, 80)'</span>, { duration: <span class="num">400</span> })
+
+    .<span class="fn">text</span>(<span class="str">'BoardJS'</span>, { x: <span class="num">0</span>, y: <span class="num">80</span>, class: <span class="str">'title center'</span>, show: <span class="str">'fade'</span>, duration: <span class="num">1000</span>, wait: <span class="kw">true</span> })
+    .<span class="fn">text</span>(<span class="str">'Timeline-based animation, made simple.'</span>, {
+      x: <span class="num">0</span>, y: <span class="num">160</span>, class: <span class="str">'description center'</span>, show: <span class="str">'fade fromleft'</span>, duration: <span class="num">800</span>, wait: <span class="kw">true</span>,
+    })
+
+    .<span class="fn">image</span>(<span class="str">'files/logo.png'</span>, { x: <span class="num">290</span>, y: <span class="num">240</span>, show: <span class="str">'fade zoom'</span>, duration: <span class="num">600</span>, easing: <span class="str">'backout'</span>, id: <span class="str">'logo'</span>, wait: <span class="kw">true</span> })
+    .<span class="fn">hover</span>(<span class="str">'logo'</span>, <span class="str">'scale:1.1; rotate:5'</span>, { duration: <span class="num">300</span>, easing: <span class="str">'backout'</span> })
+
+    .<span class="fn">text</span>(<span class="str">'Start'</span>, { x: <span class="num">300</span>, y: <span class="num">380</span>, class: <span class="str">'Button'</span>, show: <span class="str">'fade'</span>, duration: <span class="num">400</span>, id: <span class="str">'startBtn'</span> })
+    .<span class="fn">on</span>(<span class="str">'startBtn'</span>, <span class="str">'click'</span>, <span class="fn">runNextSlide</span>)
+
+    .<span class="fn">go</span>();
+}</pre>
+      </section>
+
+    </main>
+
+    <footer id="site-footer">
+      &copy; 2010&ndash;2026 Firas Moussa &mdash; BoardJS v2.0 &mdash; MIT License
+    </footer>
+
+  </div>
 </body>
 </html>

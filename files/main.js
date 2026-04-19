@@ -1,270 +1,254 @@
-var TheBoard = new BoardJS("TheShow")
+/* BoardJS — Example showcase */
 
-// Selecting An Example
-function SelectMe(who,what){
-for(var x=0;x<who.parentNode.childNodes.length;x++){who.parentNode.childNodes[x].className = "Item"}
-who.className = "Item Selected"
-what()
-}
+const TheBoard = new BoardJS('TheShow');
+
+// ── Example selector ──────────────────────────────────────────────────────────
+(function () {
+  const examples = { ExHome, ExBubbles, ExCredits, ExHover, ExGallery, ExWheel, ExEasing, ExDialog };
+  document.querySelectorAll('#IndexItems .Item').forEach(item => {
+    const activate = () => {
+      document.querySelectorAll('#IndexItems .Item').forEach(el => el.classList.remove('Selected'));
+      item.classList.add('Selected');
+      examples[item.dataset.example]?.();
+    };
+    item.addEventListener('click', activate);
+    item.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); } });
+  });
+})();
 
 
-// Examples
-function ExHome(){
-	TheBoard.reset()
-	.delay(500)
-	.addText("Hello, welcome to", 0, 100, "title center", "fade", 1000, "linear", "TheTitle",false)
-	.delay(800)
-	.addImage("files/logo.png", 270, 157, 160, "", "fade zoom", 500, "backOut", "",true)
-	.addText("The easy and powerful way to make presentations, stories and ads.", 0, 220, "description center", "fade", 1000, "linear", "TheTitle",true)
-	.addImage("content/home/arrow.png", 625,350, "", "", "fromleft fade", 1500, "bounce", "Arrow",true)
-	.flash("Arrow","always",500)
-	.showTooltip("Arrow","These examples are just to<br/> reveal the features and possibilities of the library.",10000)
-	.go()
+// ── Examples ──────────────────────────────────────────────────────────────────
+
+function ExHome() {
+  TheBoard.reset()
+    .delay(500)
+    .text('Hello, welcome to', { x: 0, y: 100, class: 'title center', show: 'fade', duration: 1000 })
+    .delay(800)
+    .image('files/logo.png', { x: 270, y: 157, width: 160, show: 'fade zoom', duration: 500, easing: 'backout', wait: true })
+    .text('The easy and powerful way to make presentations, stories and ads.', { x: 0, y: 220, class: 'description center', show: 'fade', duration: 1000, wait: true })
+    .image('content/home/arrow.png', { x: 625, y: 350, show: 'fromleft fade', duration: 1500, easing: 'bounce', id: 'Arrow', wait: true })
+    .flash('Arrow', { count: 'always', duration: 500 })
+    .showTooltip('Arrow', 'These examples reveal the features<br>and possibilities of BoardJS.', { duration: 10000 })
+    .go();
 }
 
 function ExBubbles() {
-	TheBoard.reset()
-	.background("rgb(78,122,219)", 500)
-	for (var x = 0; x < 100; x++) {
-		var W = (Math.random() * 150) + 50
-		TheBoard.addImage("content/bubbles/bubble.png", (Math.random() * 700),  - (W + 50), W, "", "frombottom fade", 5000 + (Math.random() * 8000), "linear", "IMG" + x)
-		.delay(1500)
-	}
-	TheBoard.go()
+  TheBoard.reset().background('rgb(78,122,219)');
+  for (let i = 0; i < 60; i++) {
+    const size = Math.random() * 120 + 30;
+    TheBoard
+      .image('content/bubbles/bubble.png', {
+        x: Math.random() * 700,
+        y: -(size + 50),
+        width: size,
+        show: 'frombottom fade',
+        duration: 6000 + Math.random() * 7000,
+        id: `bubble${i}`,
+      })
+      .delay(800);
+  }
+  TheBoard.go();
 }
 
-var CreditsExample = new Array(
-		"Language Design & Concept" + "#" + "Andi Gutmans, Rasmus Lerdorf,<br/> Zeev Suraski, Marcus Boerger",
-		"Zend Scripting Language Engine" + "#" + "Andi Gutmans, Zeev Suraski,<br/> Stanislav Malyshev, Marcus Boerger,<br/> Dmitry Stogov",
-		"Extension Module API" + "#" + "Andi Gutmans, Zeev Suraski, Andrei Zmievski",
-		"UNIX Build and Modularization" + "#" + "Stig Bakken, Sascha Schumann, Jani Taskinen",
-		"Windows Port" + "#" + "Shane Caraveo, Zeev Suraski,<br/> Wez Furlong, Pierre-Alain Joye",
-		"Server API (SAPI) Abstraction Layer" + "#" + "Andi Gutmans, Shane Caraveo, Zeev Suraski",
-		"Streams Abstraction Layer" + "#" + "Wez Furlong, Sara Golemon",
-		"PHP Data Objects Layer" + "#" + "Wez Furlong, Marcus Boerger, Sterling Hughes,<br/> George Schlossnagle, Ilia Alshanetsky",
-		"Output Handler" + "#" + "Zeev Suraski, Thies C. Arntzen,<br/> Marcus Boerger, Michael Wallner")
+const CREDITS = [
+  ['Language Design & Concept',      'Andi Gutmans, Rasmus Lerdorf,<br>Zeev Suraski, Marcus Boerger'],
+  ['Zend Scripting Language Engine', 'Andi Gutmans, Zeev Suraski,<br>Stanislav Malyshev, Dmitry Stogov'],
+  ['Extension Module API',           'Andi Gutmans, Zeev Suraski, Andrei Zmievski'],
+  ['UNIX Build & Modularization',    'Stig Bakken, Sascha Schumann, Jani Taskinen'],
+  ['Windows Port',                   'Shane Caraveo, Zeev Suraski,<br>Wez Furlong, Pierre-Alain Joye'],
+  ['Server API (SAPI)',               'Andi Gutmans, Shane Caraveo, Zeev Suraski'],
+  ['Streams Abstraction Layer',      'Wez Furlong, Sara Golemon'],
+  ['PHP Data Objects Layer',         'Wez Furlong, Marcus Boerger,<br>Sterling Hughes, George Schlossnagle'],
+  ['Output Handler',                 'Zeev Suraski, Thies C. Arntzen,<br>Marcus Boerger, Michael Wallner'],
+];
+
 function ExCredits() {
-	TheBoard.reset()
-	.background("#000", 50)
-	.addText("PHP Credits", 0, 100, "title center", "fade", 1000, "linear", "TheTitle")
-	.addText("php.net/credits.php", 0, 150, "description center", "fade", 1000, "linear", "SubTitle", true)
-	.delay(2500)
-	.remove("TheTitle SubTitle")
-	for (var x = 0; x < CreditsExample.length; x++) {
-		TheBoard.addText(CreditsExample[x].split("#")[0], 0, 500, "description", "appear", 1, "linear", "x" + x)
-		.addText(CreditsExample[x].split("#")[1], 0, 500, "description", "apear", 1, "linear", "y" + x)
-		.setStyle("x" + x, "left:auto;right:380px;font-size:14px;color:#aaa")
-		.setStyle("y" + x, "left:330px;font-weight:bold")
-		.moveTo("x" + x, "", 400, 300, "easeOut")
-		.moveTo("y" + x, "", 400, 300, "easeOut", true)
-		.moveTo("x" + x, "", -100, 20000, "linear")
-		.moveTo("y" + x, "", -100, 20000, "linear")
-		.delay(2600)
-	}
-	TheBoard.go()
+  TheBoard.reset()
+    .background('#000', { duration: 50 })
+    .text('PHP Credits',         { x: 0, y: 100, class: 'title center',       show: 'fade', duration: 1000, id: 'CredTitle' })
+    .text('php.net/credits.php', { x: 0, y: 150, class: 'description center', show: 'fade', duration: 1000, id: 'CredSub', wait: true })
+    .delay(2500)
+    .remove('CredTitle CredSub');
+
+  CREDITS.forEach(([left, right], i) => {
+    TheBoard
+      .text(left,  { x: 0, y: 500, class: 'description', show: 'appear', duration: 1, id: `cl${i}` })
+      .text(right, { x: 0, y: 500, class: 'description', show: 'appear', duration: 1, id: `cr${i}` })
+      .style(`cl${i}`, 'left:auto;right:380px;font-size:14px;color:#aaa')
+      .style(`cr${i}`, 'left:330px;font-weight:bold')
+      .move(`cl${i}`, { y: 400, duration: 300, easing: 'easeout' })
+      .move(`cr${i}`, { y: 400, duration: 300, easing: 'easeout', wait: true })
+      .move(`cl${i}`, { y: -100, duration: 20000 })
+      .move(`cr${i}`, { y: -100, duration: 20000 })
+      .delay(2600);
+  });
+
+  TheBoard.go();
 }
+
 function ExHover() {
-	TheBoard.reset()
-	.background("rgb(34,177,76)", 500)
-	.addText("Text 1", 50, 20, "title", "zoom", 200, "linear", "x1")
-	.circle("x1", "background-color:rgb(29,150,65);padding:40px;cursor:pointer;border:3px solid rgb(24,131,56)").delay(100)
-	.addText("Text 2", 258, 20, "title", "zoom", 200, "linear", "x2")
-	.circle("x2", "background-color:rgb(29,150,65);padding:40px;cursor:pointer;border:3px solid rgb(24,131,56)").delay(100)
-	.addText("Text 3", 466, 20, "title", "zoom", 200, "linear", "x3")
-	.circle("x3", "background-color:rgb(29,150,65);padding:40px;cursor:pointer;border:3px solid rgb(24,131,56)").delay(100)
-	.addText("Text 4", 50, 238, "title", "zoom", 200, "linear", "x4")
-	.circle("x4", "background-color:rgb(29,150,65);padding:40px;cursor:pointer;border:3px solid rgb(24,131,56)").delay(100)
-	.addText("Text 5", 258, 238, "title", "zoom", 200, "linear", "x5")
-	.circle("x5", "background-color:rgb(29,150,65);padding:40px;cursor:pointer;border:3px solid rgb(24,131,56)").delay(100)
-	.addText("Text 6", 466, 238, "title", "zoom", 200, "linear", "x6")
-	.circle("x6", "background-color:rgb(29,150,65);padding:40px;cursor:pointer;border:3px solid rgb(24,131,56)").delay(100)
-	.delay(200)
-	.hover("x1 x2 x3 x4 x5 x6", "border:5px solid rgb(24,131,56);scale:1.2;rotate:360", 300, "linear")
-	.addTooltip("x5", "Tooltip & Hover<br/>work together without any conflict")
-	.addTooltip("x4", "UnHovered<br/>The tooltip was not affected")
-	.unHover("x4")
-	.go()
+  const circleStyle = 'background-color:rgb(29,150,65);padding:40px;cursor:pointer;border:3px solid rgb(24,131,56)';
+  const items = [
+    { id: 'hx1', x: 50,  y: 20  },
+    { id: 'hx2', x: 258, y: 20  },
+    { id: 'hx3', x: 466, y: 20  },
+    { id: 'hx4', x: 50,  y: 238 },
+    { id: 'hx5', x: 258, y: 238 },
+    { id: 'hx6', x: 466, y: 238 },
+  ];
+
+  TheBoard.reset().background('rgb(34,177,76)');
+  items.forEach(({ id, x, y }, i) => {
+    TheBoard
+      .text(`Text ${i + 1}`, { x, y, class: 'title', show: 'zoom', duration: 200, id })
+      .circle(id, circleStyle)
+      .delay(100);
+  });
+
+  const ids = items.map(i => i.id).join(' ');
+  TheBoard
+    .delay(200)
+    .hover(ids, 'border:5px solid rgb(24,131,56);scale:1.2;rotate:360', { duration: 300 })
+    .tooltip('hx5', 'Tooltip & Hover<br>work together without any conflict')
+    .tooltip('hx4', 'UnHovered<br>The tooltip was not affected')
+    .unhover('hx4')
+    .go();
 }
-var CurrentIndexForExample4 = 0,
-TheImages = new Array(
-		"content/gallery/image1.jpg#Country Road",
-		"content/gallery/image2.jpg#The Humber Bridge",
-		"content/gallery/image3.jpg#Wind Farm",
-		"content/gallery/image4.jpg#Copse of Trees",
-		"content/gallery/image5.jpg#Green field Blue sky")
+
+const GALLERY = [
+  { src: 'content/gallery/image1.jpg', title: 'Country Road' },
+  { src: 'content/gallery/image2.jpg', title: 'The Humber Bridge' },
+  { src: 'content/gallery/image3.jpg', title: 'Wind Farm' },
+  { src: 'content/gallery/image4.jpg', title: 'Copse of Trees' },
+  { src: 'content/gallery/image5.jpg', title: 'Green Field Blue Sky' },
+];
+let galleryIndex = 0;
+
 function ExGallery() {
-	CurrentIndexForExample4 = 0
-		TheBoard.reset()
-		// Initial Image
-		.background(TheImages[0].split("#")[0], 500)
-		.addText(TheImages[0].split("#")[1], 0, 20, "title", "fromtop fade", 1000, "backOut", "TheName")
-		.setStyle("TheName", "width:700px;text-shadow:0px 1px 1px #000")
-		// Loading images into cache
-		.addImage(TheImages[1].split("#")[0], 0, 0, 1, 1, "appear", 1, "linear", "x2")
-		.addImage(TheImages[2].split("#")[0], 0, 0, 1, 1, "appear", 1, "linear", "x3")
-		.addImage(TheImages[3].split("#")[0], 0, 0, 1, 1, "appear", 1, "linear", "x4")
-		.addImage(TheImages[4].split("#")[0], 0, 0, 1, 1, "appear", 1, "linear", "x5")
-		.remove("x2 x3 x4 x5")
-		
-		// Next
-		.addImage("content/gallery/next.png", 360, 410, "", "", "fade", 500, "linear", "nxt")
-		.setStyle("nxt", "cursor:pointer")
-		.addEvent("nxt", "click", function () {
-			CurrentIndexForExample4++
-			TheBoard.setStyle("prv", "display:block")
-			.remove("TheName")
-			.addText(TheImages[CurrentIndexForExample4].split("#")[1], 0, 20, "title", "fromtop fade", 1000, "backOut", "TheName")
-			.setStyle("TheName", "width:700px;text-shadow:0px 1px 1px #000")
-			.background(TheImages[CurrentIndexForExample4].split("#")[0], 500)
-			if (CurrentIndexForExample4 == 4) {
-				TheBoard.setStyle("nxt", "display:none")
-			}
-		})
-		
-		// Previous
-		.addImage("content/gallery/prev.png", 330, 410, "", "", "fade", 500, "linear", "prv")
-		.setStyle("prv", "cursor:pointer;display:none")
-		.addEvent("prv", "click", function () {
-			CurrentIndexForExample4--
-			TheBoard.setStyle("nxt", "display:block")
-			.remove("TheName")
-			.addText(TheImages[CurrentIndexForExample4].split("#")[1], 0, 20, "title", "fromtop fade", 1000, "backOut", "TheName")
-			.setStyle("TheName", "width:700px;text-shadow:0px 1px 1px #000")
-			.background(TheImages[CurrentIndexForExample4].split("#")[0], 500)
-			if (CurrentIndexForExample4 == 0) {
-				TheBoard.setStyle("prv", "display:none")
-			}
-		})
-		.hover("nxt prv", "scale:1.2", 300, "linear")
-		.addText("Photos from http://www.flickr.com/photos/freefoto", 4, 430, "description", "split", 1000, "linear", "about")
-		.setStyle("about", "font-size:13px;text-shadow:1px 1px 1px #000")
-		.go()
+  galleryIndex = 0;
+
+  function updateGallery() {
+    const { src, title } = GALLERY[galleryIndex];
+    TheBoard
+      .remove('GalleryTitle')
+      .text(title, { x: 0, y: 20, class: 'title', show: 'fromtop fade', duration: 1000, easing: 'backout', id: 'GalleryTitle' })
+      .style('GalleryTitle', 'width:700px;text-shadow:0 1px 4px #000')
+      .background(src);
+    document.getElementById('gallery-prev').style.display = galleryIndex === 0                   ? 'none' : 'block';
+    document.getElementById('gallery-next').style.display = galleryIndex === GALLERY.length - 1  ? 'none' : 'block';
+  }
+
+  TheBoard.reset()
+    .background(GALLERY[0].src)
+    .text(GALLERY[0].title, { x: 0, y: 20, class: 'title', show: 'fromtop fade', duration: 1000, easing: 'backout', id: 'GalleryTitle' })
+    .style('GalleryTitle', 'width:700px;text-shadow:0 1px 4px #000');
+
+  // Preload remaining images
+  GALLERY.slice(1).forEach(({ src }, i) => {
+    TheBoard.image(src, { x: 0, y: 0, width: 1, height: 1, id: `preload${i}` });
+  });
+  TheBoard.remove('preload0 preload1 preload2 preload3');
+
+  TheBoard
+    .image('content/gallery/next.png', { x: 360, y: 410, show: 'fade', duration: 500, id: 'gallery-next' })
+    .style('gallery-next', 'cursor:pointer')
+    .on('gallery-next', 'click', () => { if (galleryIndex < GALLERY.length - 1) { galleryIndex++; updateGallery(); } })
+
+    .image('content/gallery/prev.png', { x: 330, y: 410, show: 'fade', duration: 500, id: 'gallery-prev' })
+    .style('gallery-prev', 'cursor:pointer;display:none')
+    .on('gallery-prev', 'click', () => { if (galleryIndex > 0) { galleryIndex--; updateGallery(); } })
+
+    .hover('gallery-next gallery-prev', 'scale:1.2', { duration: 300 })
+    .text('Photos from flickr.com/photos/freefoto', { x: 4, y: 430, class: 'description', show: 'split', duration: 1000, id: 'gallery-credit' })
+    .style('gallery-credit', 'font-size:13px;text-shadow:1px 1px 1px #000')
+    .go();
 }
 
 function ExWheel() {
-	function RotateMe() {
-		var IDX = parseInt(this.id.replace("Item", ""))
-			TheBoard.rotate("TheWheel",  - (45 * (IDX - 1)), 1000, "linear")
-			.html("TheInfo", "Item<br/>" + (IDX + 1))
-	}
-	TheBoard.reset()
-	.addImage("content/wheel/wheel.png", 5, 5, "", "", "appear", 1, "linear", "TheWheel")
-	.addText("", 460, 30, "title", "split", 1000, "linear", "TheInfo")
-	.setStyle("TheInfo", "padding:10px;border:2px solid rgb(92,71,118);width:200px;height:80px;background:rgb(128,100,162)")
-	.round("TheInfo", 20)
-	var beta = 2 * Math.PI / 8
-		for (var x = 0; x < 8; x++) {
-			var alpha = (beta * x - Math.PI / 2) + 0.4,
-			cos = Math.cos(alpha),
-			sin = Math.sin(alpha)
-				TheBoard.addImage("content/wheel/img" + x + ".png", 202 + (160 * cos), 202 + (160 * sin), "", "", "fade", 100, "linear", "Item" + x)
-				.rotate("Item" + x, 15, 0)
-				.delay(50)
-				//.merge("Item" + x, "TheWheel")
-				.setStyle("Item" + x, "cursor:pointer")
-				.addEvent("Item" + x, "click", RotateMe)
-				.hover("Item" + x, "scale:1.3",800,"elastic")
-				.delay(50)
-		}
-		TheBoard.merge("Item0 Item1 Item2 Item3 Item4 Item5 Item6 Item7","TheWheel")
-		.showTooltip("Item3", "Click here")
-		.go()
+  function onItemClick() {
+    const i = parseInt(this.id.replace('WheelItem', ''), 10);
+    TheBoard.rotate('TheWheel', -(45 * i), 1000, { easing: 'linear' }).html('TheInfo', `Item<br>${i + 1}`);
+  }
+
+  TheBoard.reset()
+    .image('content/wheel/wheel.png', { x: 5, y: 5, id: 'TheWheel' })
+    .text('', { x: 460, y: 30, class: 'title', show: 'split', duration: 1000, id: 'TheInfo' })
+    .style('TheInfo', 'padding:10px;border:2px solid rgb(92,71,118);width:200px;min-height:90px;background:rgb(128,100,162)')
+    .round('TheInfo', 20);
+
+  const count = 8;
+  for (let i = 0; i < count; i++) {
+    const alpha = (2 * Math.PI / count) * i - Math.PI / 2 + 0.4;
+    TheBoard
+      .image(`content/wheel/img${i}.png`, { x: 202 + 160 * Math.cos(alpha), y: 202 + 160 * Math.sin(alpha), show: 'fade', duration: 100, id: `WheelItem${i}` })
+      .rotate(`WheelItem${i}`, 15, { duration: 0 })
+      .delay(50)
+      .style(`WheelItem${i}`, 'cursor:pointer')
+      .on(`WheelItem${i}`, 'click', onItemClick)
+      .hover(`WheelItem${i}`, 'scale:1.3', { duration: 800, easing: 'elastic' })
+      .delay(50);
+  }
+
+  const allItems = Array.from({ length: count }, (_, i) => `WheelItem${i}`).join(' ');
+  TheBoard
+    .merge(allItems, 'TheWheel')
+    .showTooltip('WheelItem3', 'Click here', { duration: 3000 })
+    .go();
 }
 
-function ExEasing(){
-	TheBoard.reset()
-	.addText("linear", 48,350,"Button","fade",100,"linear","b1")
-	.addText("easeIn", 135,350,"Button","fade",100,"linear","b2")
-	.addText("easeOut", 222,350,"Button","fade",100,"linear","b3")
-	.addText("backIn", 314,350,"Button","fade",100,"linear","b4")
-	.addText("backOut", 401,350,"Button","fade",100,"linear","b5")
-	.addText("elastic", 492,350,"Button","fade",100,"linear","b6")
-	.addText("bounce", 580,350,"Button","fade",100,"linear","b7")
-	.addImage("content/easing/ball.png", 68, 310, "", "", "appear", 1, "linear", "ball_1")
-	.addImage("content/easing/ball.png", 155, 310, "", "", "appear", 1, "linear", "ball_2")
-	.addImage("content/easing/ball.png", 244, 310, "", "", "appear", 1, "linear", "ball_3")
-	.addImage("content/easing/ball.png", 333, 310, "", "", "appear", 1, "linear", "ball_4")
-	.addImage("content/easing/ball.png", 422, 310, "", "", "appear", 1, "linear", "ball_5")
-	.addImage("content/easing/ball.png", 511, 310, "", "", "appear", 1, "linear", "ball_6")
-	.addImage("content/easing/ball.png", 600, 310, "", "", "appear", 1, "linear", "ball_7")
-	.addEvent("b1 b2 b3 b4 b5 b6 b7","click",function(){
-		var EASE = ["linear","easeIn","easeOut","backIn","backOut","elastic","bounce"][parseInt(this.id.slice(1))-1]
-		TheBoard.moveTo("ball_" + this.id.slice(1),"",50,1000,EASE)
-		.fadeOut(this.id)
-	})
-	.addEvent("ball_1 ball_2 ball_3 ball_4 ball_5 ball_6 ball_7","click",function(){
-		var EASE = ["linear","easeIn","easeOut","backIn","backOut","elastic","bounce"][parseInt(this.id.slice(5))-1]
-		TheBoard.moveTo(this.id,"",310,1000,EASE)
-		.fadeIn("b"+this.id.slice(5))
-	})
-	.addText("Click on the buttons to animate, then click on the balls to take them back.", 0,410,"description center","fade",100,"linear","b1")
-	.go()
+function ExEasing() {
+  const EASING_LIST = ['linear', 'easeIn', 'easeOut', 'backIn', 'backOut', 'elastic', 'bounce'];
+  const normalize   = s => s.toLowerCase();
+
+  TheBoard.reset();
+  EASING_LIST.forEach((name, i) => {
+    const n = i + 1;
+    TheBoard
+      .text(name, { x: 48 + i * 87, y: 350, class: 'Button', show: 'fade', duration: 100, id: `easebtn${n}` })
+      .image('content/easing/ball.png', { x: 68 + i * 87, y: 310, id: `ball${n}` });
+  });
+
+  TheBoard
+    .on('easebtn1 easebtn2 easebtn3 easebtn4 easebtn5 easebtn6 easebtn7', 'click', function () {
+      const n = parseInt(this.id.replace('easebtn', ''), 10);
+      TheBoard.move(`ball${n}`, { y: 50, duration: 1000, easing: normalize(EASING_LIST[n - 1]) }).fadeOut(this.id);
+    })
+    .on('ball1 ball2 ball3 ball4 ball5 ball6 ball7', 'click', function () {
+      const n = parseInt(this.id.replace('ball', ''), 10);
+      TheBoard.move(this.id, { y: 310, duration: 1000, easing: normalize(EASING_LIST[n - 1]) }).fadeIn(`easebtn${n}`);
+    })
+    .text('Click the buttons to animate — click the balls to reset.', { x: 0, y: 410, class: 'description center', show: 'fade', duration: 100 })
+    .go();
 }
 
-function ExDialog(){
-	TheBoard.reset()
-	.addText("Content from <a style='color:#fff;text-decoration:underline' target='_blank' href='http://www.focusenglish.com/dialogues/friendship/dropmealine.html'>http://www.focusenglish.com/dialogues/friendship/dropmealine.html</a>", 0, 420, "description center", "fade", 1000, "linear")
-	.addText("Don't forget to drop me a line!", 0, 10, "title center", "fade", 1000, "linear", "TheTitle",true)
-	.addText("Ryan finds a new job in New York and is about to move there.<br/>He doesn't want his friendship with Adriana to drift apart. <br/>He wants to keep in touch.", 50, 100, "description", "fade", 1000, "linear", "PLOT")
-	.setStyle("PLOT","font-size:23px;text-align:center;line-height:35px;")
-	.delay(8000)
-	.remove("PLOT")
-	.addImage("content/dialog/adriana.png", 68, 150, "", "", "fromleft", 500, "linear", "woman",true)
-	.addImage("content/dialog/ryan.png", 385, 150, "", "", "fromright", 500, "linear", "man",true)
+function ExDialog() {
+  const line = (who, text, audio) =>
+    TheBoard
+      .showTooltip(who, text)
+      .sound(`content/dialog/${audio}.mp3`, { wait: true })
+      .removeTooltip(who);
 
-	.showTooltip("woman","I heard you're moving to New York.","always")
-	.playSound("content/dialog/dropmealineadriana1.mp3",true)
-	.removeTooltip("woman")
+  TheBoard.reset()
+    .text('Content from <a style="color:#fff;text-decoration:underline" target="_blank" rel="noopener" href="http://www.focusenglish.com">focusenglish.com</a>', { x: 0, y: 420, class: 'description center', show: 'fade', duration: 1000 })
+    .text("Don't forget to drop me a line!", { x: 0, y: 10, class: 'title center', show: 'fade', duration: 1000, id: 'DialogTitle', wait: true })
+    .text("Ryan finds a new job in New York and is about to move there.<br>He doesn't want his friendship with Adriana to drift apart.", { x: 50, y: 100, class: 'description', show: 'fade', duration: 1000, id: 'DialogPlot' })
+    .style('DialogPlot', 'font-size:22px;text-align:center;line-height:34px;')
+    .delay(7000)
+    .remove('DialogPlot')
+    .image('content/dialog/adriana.png', { x: 68,  y: 150, show: 'fromleft',  duration: 500, id: 'woman', wait: true })
+    .image('content/dialog/ryan.png',    { x: 385, y: 150, show: 'fromright', duration: 500, id: 'man',   wait: true });
 
-	.showTooltip("man","Yes.  I've got an offer in upstate New York.","always")
-	.playSound("content/dialog/dropmealineryan1.mp3",true)
-	.removeTooltip("man")
+  line('woman', "I heard you're moving to New York.",                          'dropmealineadriana1');
+  line('man',   "Yes. I've got an offer in upstate New York.",                 'dropmealineryan1');
+  line('woman', "Oh, that's great! But I'm going to miss you.",               'dropmealineadriana2');
+  line('man',   "Me too. Let's keep in touch.",                               'dropmealineryan2');
+  line('woman', "Yeah.<br>Don't forget to drop me a line when you settle.",   'dropmealineadriana3');
+  line('man',   "Trust me, I won't. I'll keep you posted.",                   'dropmealineryan3');
+  line('woman', "You have my address?",                                        'dropmealineadriana4');
+  line('man',   "Well, I have your e-mail address.",                           'dropmealineryan4');
+  line('woman', "All right! I look forward to hearing from you. Good luck!",  'dropmealineadriana5');
 
-	.showTooltip("woman","Oh, that's great!  But I'm going to miss you.","always")
-	.playSound("content/dialog/dropmealineadriana2.mp3",true)
-	.removeTooltip("woman")
-
-	.showTooltip("man","Me, too.  Let's keep in touch.","always")
-	.playSound("content/dialog/dropmealineryan2.mp3",true)
-	.removeTooltip("man")
-
-	.showTooltip("woman","Yeah.<br/>Don't forget to drop me a line when you settle down.","always")
-	.playSound("content/dialog/dropmealineadriana3.mp3",true)
-	.removeTooltip("woman")
-
-	.showTooltip("man","Trust me.  I won't. I'll keep you posted.","always")
-	.playSound("content/dialog/dropmealineryan3.mp3",true)
-	.removeTooltip("man")
-
-	.showTooltip("woman","You have my address?","always")
-	.playSound("content/dialog/dropmealineadriana4.mp3",true)
-	.removeTooltip("woman")
-
-	.showTooltip("man","Well, I have your e-mail address.","always")
-	.playSound("content/dialog/dropmealineryan4.mp3",true)
-	.removeTooltip("man")
-
-	.showTooltip("woman","All right!  I look forward to hearing from you soon.<br/>Good luck!","always")
-	.playSound("content/dialog/dropmealineadriana5.mp3",true)
-	.removeTooltip("woman")
-
-	.go()
+  TheBoard.go();
 }
 
-
-ExHome()
-
-
-/*!
-	
-	Make your own example
-
-	function MyExample(){
-		TheBoard.reset()
-
-		// Write your commands here
-
-		TheBoard.go()
-	}
-	
-*/
+ExHome();
